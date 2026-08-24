@@ -1,82 +1,194 @@
-# HUBSUS360 — ETL de dados do SIH/SUS
+# HUBSUS360 — ETL do SIH/SUS
 
 Este repositório contém o processo de ETL do projeto acadêmico **HUBSUS360**, desenvolvido para o Challenge da Oracle na FIAP.
 
-O código lê os arquivos do **SIH/SUS (Sistema de Informações Hospitalares do SUS)**, realiza o tratamento dos registros de internação e gera tabelas menores para análise exploratória, construção do painel e futura carga no Oracle Database.
+O código processa os dados públicos do **Sistema de Informações Hospitalares do SUS (SIH/SUS)**, disponibilizados pelo DATASUS, para o estado de **São Paulo**, no período de **janeiro de 2023 a dezembro de 2025**. As internações são complementadas com referências do CNES, SIGTAP, CID-10 e regiões de saúde.
 
-## Dados necessários
+O resultado é preparado para três usos:
 
-O ETL utiliza os arquivos reduzidos de AIH do SIH/SUS, disponibilizados pelo DATASUS nos formatos `.dbc` ou `.dbf`.
+- carga das tabelas no Oracle Database;
+- Análise Exploratória de Dados (AED);
+- conferência da qualidade e consistência dos dados.
 
-Os arquivos devem seguir o padrão oficial:
+## Período e abrangência
+
+| Item | Definição |
+|---|---|
+| Estado | São Paulo (SP) |
+| Período | Janeiro de 2023 a dezembro de 2025 |
+| Competências | 36 meses |
+| Base principal | SIH/SUS — arquivos reduzidos de AIH (`RDSP*.dbc`) |
+| Unidade principal de análise | Internações hospitalares agregadas por perfil |
+
+Os arquivos públicos de origem não estão incluídos no repositório devido ao tamanho.
+
+## Fontes de dados
+
+- **SIH/SUS (RD):** internações hospitalares, diagnósticos, procedimentos, valores, permanência, óbitos e dados do paciente;
+- **CNES (ST):** informações mensais dos estabelecimentos de saúde;
+- **CNES (LT):** leitos existentes e leitos SUS por estabelecimento e competência;
+- **SIGTAP:** descrições, grupos e complexidade dos procedimentos;
+- **CID-10:** nomes oficiais das categorias e subcategorias dos diagnósticos;
+- **Domínios do CNES:** descrições dos tipos de estabelecimento e de leito;
+- **Estabelecimentos do CNES:** nome dos hospitais, com identificação especial para códigos históricos sem nome no retrato mais recente;
+- **Regiões de Saúde:** município, região de saúde e macrorregião.
+
+## Organização das referências
+
+O caminho recomendado é `referencias_hubsus360`, com a seguinte estrutura:
 
 ```text
-RDSP2401.dbc  → São Paulo, janeiro de 2024
-RDSP2512.dbc  → São Paulo, dezembro de 2025
+referencias_hubsus360/
+├── dados_sih/
+│   ├── 2023/
+│   ├── 2024/
+│   └── 2025/
+├── ST/
+├── LT/
+├── sigtap/
+├── cid10/
+├── dominios_cnes/
+├── regioes_saude/
+└── cnes_estabelecimentos/
 ```
 
-Os datasets não estão incluídos neste repositório por causa do tamanho. Antes da execução, baixe os arquivos do período desejado e organize-os em uma pasta, podendo separar cada ano em uma subpasta:
+Para cada ano, são esperadas as 12 competências mensais do SIH, ST, LT e SIGTAP. O ETL relaciona as referências mensais à mesma competência da internação.
+
+## Processamento realizado
+
+O arquivo `HUBSUS360_ETL.py` executa, entre outras, as seguintes etapas:
+
+1. localiza e valida todas as referências;
+2. lê diretamente os arquivos DBC/DBF do DATASUS;
+3. normaliza datas, códigos, valores e campos categóricos;
+4. diferencia AIH inicial de AIH de continuidade;
+5. classifica as Internações por Condições Sensíveis à Atenção Primária (ICSAP) nos 19 grupos da lista brasileira;
+6. acrescenta descrições da CID-10 e do SIGTAP;
+7. complementa hospitais, municípios, regiões de saúde e capacidade de leitos com o CNES;
+8. calcula os indicadores municipais e hospitalares;
+9. gera as tabelas para o Oracle, o arquivo da AED e os relatórios de validação;
+10. salva um cache mensal para evitar a releitura dos DBCs nas próximas execuções.
+
+## Tabelas geradas para o Oracle
+
+O ETL gera 13 arquivos CSV em `tabelas_oracle`:
+
+1. `T_GRUPO_ICSAP.csv`
+2. `T_DIAGNOSTICO.csv`
+3. `T_MUNICIPIO.csv`
+4. `T_ESTABELECIMENTO.csv`
+5. `T_PROCEDIMENTO.csv`
+6. `T_FAIXA_ETARIA.csv`
+7. `T_SEXO.csv`
+8. `T_RACA_COR.csv`
+9. `T_PERFIL_INTERNACAO.csv`
+10. `T_RESUMO_AIH.csv`
+11. `T_RESUMO_ASSISTENCIAL.csv`
+12. `T_CATEGORIA_LEITO.csv`
+13. `T_CAPACIDADE_LEITO.csv`
+
+Também são gerados:
+
+- `aed/DATASET_AED_HUBSUS360.csv`: arquivo único para a análise exploratória;
+- `validacoes/`: resultados das verificações de qualidade, cobertura e consistência;
+- `cache_hubsus360/`: competências já tratadas para reutilização;
+- pacote ZIP dos resultados, quando solicitado.
+
+## Indicadores
+
+### Percentual de internações ICSAP
 
 ```text
-dados_sih/
-├── 2024/
-│   ├── RDSP2401.dbc
-│   └── ...
-└── 2025/
-    ├── RDSP2501.dbc
-    └── ...
+PC_INTERNACOES_ICSAP =
+    QT_INTERNACOES_ICSAP / QT_INTERNACOES_TOTAL * 100
 ```
+
+### IEP municipal mensal
+
+O IEP utilizado no projeto é um indicador experimental, e não um indicador oficial do SUS:
+
+```text
+IEP = 100 - (VL_TOTAL_ICSAP / VL_TOTAL_ELEGIVEL_IEP * 100)
+```
+
+As categorias CID-10 de parto `O80` a `O84` são retiradas do denominador elegível. Quanto maior o resultado, menor a participação financeira das ICSAP no valor elegível do município e mês.
+
+### Permanência média hospitalar
+
+```text
+PERMANENCIA_MEDIA = QT_DIAS_PERMANENCIA / QT_SAIDAS_HOSPITALARES
+```
+
+### Percentual de óbitos hospitalares
+
+```text
+PC_OBITOS = QT_OBITOS / QT_SAIDAS_HOSPITALARES * 100
+```
+
+Nos meses sem saída hospitalar, permanência média e percentual de óbitos permanecem nulos, acompanhados de um marcador que informa que o indicador não pôde ser calculado.
 
 ## Instalação
 
-É necessário ter o Python instalado. No terminal, execute:
+É necessário ter Python instalado. No terminal do projeto, execute:
 
 ```bash
-python -m pip install pandas numpy dbfread
+python -m pip install pandas numpy openpyxl
 ```
+
+O ETL possui leitor próprio para os arquivos DBC e não exige uma biblioteca adicional de descompactação.
 
 ## Como executar
 
-Sem informar parâmetros, o programa abre uma janela para selecionar a pasta dos dados ou arquivos individuais:
+Processamento completo de 2023 a 2025:
+
+```bash
+python HUBSUS360_ETL.py --referencias referencias_hubsus360 --anos 2023 2024 2025
+```
+
+Se a pasta estiver com o nome e a localização recomendados, também é possível executar:
 
 ```bash
 python HUBSUS360_ETL.py
 ```
 
-Também é possível informar a pasta e o período pelo terminal:
+Processamento de um ano ou mês específico:
 
 ```bash
-python HUBSUS360_ETL.py --sih "C:\dados\dados_sih" --anos 2024 2025
+python HUBSUS360_ETL.py --referencias referencias_hubsus360 --anos 2023
+python HUBSUS360_ETL.py --referencias referencias_hubsus360 --anos 2025 --meses 6
 ```
 
-Para processar apenas um mês:
+Para ignorar o cache e reler todas as competências:
 
 ```bash
-python HUBSUS360_ETL.py --sih "C:\dados\dados_sih" --anos 2025 --meses 6
+python HUBSUS360_ETL.py --referencias referencias_hubsus360 --refazer-cache
 ```
 
-## Saídas
-
-Por padrão, os resultados são salvos na pasta `resultados_hubsus360_relacional`, organizada em:
-
-- `dimensoes`: tabelas auxiliares de municípios, tempo, hospitais e classificações;
-- `fatos`: tabelas tratadas e agregadas para as análises do HUBSUS360;
-- `validacoes`: arquivos que conferem se os totais foram processados corretamente.
-
-A principal tabela para o painel e para a análise exploratória municipal é `fato_municipio_mes.csv`. Ela reúne, por município e mês, informações como internações, ICSAP, gastos, permanência, óbitos e indicadores.
-
-O detalhe individual das internações não é gerado por padrão, pois pode conter milhões de linhas. Quando necessário, pode ser criado com:
+Para gerar também o pacote ZIP:
 
 ```bash
-python HUBSUS360_ETL.py --sih "C:\dados\dados_sih" --gerar-detalhe
+python HUBSUS360_ETL.py --referencias referencias_hubsus360 --gerar-zip
 ```
 
-## CNES histórico
+## Pontos de atenção para a AED
 
-O código também está preparado para receber dados históricos do CNES. Essa etapa é opcional e utiliza arquivos de estabelecimentos e leitos para complementar as análises de hospitais e capacidade cadastrada.
+- Cada linha de `DATASET_AED_HUBSUS360.csv` representa um **perfil agregado**, não uma AIH nem um paciente individual.
+- A quantidade de internações deve ser calculada pela soma de `QT_INTERNACOES`; a contagem de linhas não representa o total de internações.
+- `NM_MUNICIPIO` representa o município de residência do paciente, não necessariamente o município do hospital.
+- Indicadores municipais repetidos no arquivo devem ser considerados uma única vez por `DT_COMPETENCIA + CD_MUNICIPIO_RESIDENCIA`.
+- Indicadores hospitalares e de leitos devem ser considerados uma única vez por `DT_COMPETENCIA + CD_CNES`.
+- Não devem ser somados os campos `PC_INTERNACOES_ICSAP_MUNICIPIO_MES`, `IEP_MUNICIPIO_MES`, `QT_SAIDAS_HOSPITAL_MES`, `PERMANENCIA_MEDIA_HOSPITAL_MES`, `PC_OBITOS_HOSPITAL_MES`, `QT_LEITOS_EXISTENTES_TOTAL` e `QT_LEITOS_SUS_TOTAL`.
+- Os leitos do CNES representam capacidade cadastrada, não disponibilidade de vagas em tempo real.
+- Estabelecimentos históricos ausentes no retrato mais recente do CNES são mantidos com identificação explícita, sem excluir suas internações.
 
-```bash
-python HUBSUS360_ETL.py --sih "C:\dados\dados_sih" --cnes "C:\dados\cnes"
-```
+## Validações
 
-Os dados do CNES representam a capacidade cadastrada de leitos, e não a disponibilidade de vagas em tempo real.
+Antes de encerrar, o ETL verifica cobertura das competências, chaves, duplicidades, relacionamentos, valores, indicadores, descrições e consistência entre as tabelas. Alertas de referência são preservados nos relatórios, sem apagar registros válidos do SIH/SUS.
+
+## Integrantes
+
+- Guilherme Ladeira Corrêa Santos — RM 571137
+- Lucas Araújo Curci — RM 572053
+- Lucas Luna Pimentel — RM 573538
+- Pedro Henrique Moretti Aguiar — RM 569806
+- Lucas Amaral da Silva Barros — RM 571736
