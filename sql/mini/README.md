@@ -1,10 +1,11 @@
-# Mini carga para SQL Developer
+# SQL Developer
 
-01_ddl.sql contém o DDL completo das tabelas Oracle. 02_dml.sql contém uma mini carga para validar registros relacionados. O CSV é uma amostra de conferência.
+O DDL definitivo e a mini carga DML do HUBSUS360 ainda estão em revisão.
 
-A carga demonstra o modelo e as chaves, mas não é a base integral do SIH/SUS nem reproduz sozinha a AED completa.
+Por enquanto, esta pasta não contém scripts executáveis. Quando a estrutura for validada, serão adicionados:
 
-    @sql/mini/01_ddl.sql
-    @sql/mini/02_dml.sql
+- DDL compatível com a mini carga;
+- DML da amostra;
+- consultas testadas no Oracle SQL Developer.
 
-Depois execute sql/queries/consultas_exemplo.sql.
+Não execute arquivos SQL desta pasta até a publicação da versão validada.

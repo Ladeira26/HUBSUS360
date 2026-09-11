@@ -2,4 +2,4 @@
 
 ETL/Python e orquestração; SQL relacional e Oracle SQL Developer; arquitetura moderna de dados; ética, governança e segurança; Machine Learning.
 
-Evidências com números de matrícula não foram publicadas. Os códigos e o DDL técnico serão preservados nas próximas partes do repositório.
+Os pipelines técnicos já estão publicados. O DDL relacional definitivo e as evidências com números de matrícula permanecem fora do repositório até revisão e saneamento.

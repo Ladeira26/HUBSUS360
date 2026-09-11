@@ -17,7 +17,7 @@ A base trabalha com perfis agregados de internação. Uma linha não representa 
 
     etl/                         ETL principal e orquestração
     aed/                         Análise exploratória e metodologia
-    sql/mini/                    DDL, DML e amostra para SQL Developer
+    sql/                         Materiais SQL em preparação
     sql/queries/                 Consultas de demonstração
     docs/                        Dicionário de dados e guia do IEP
     sprints/01-ideacao/          Ideação
@@ -38,11 +38,9 @@ Tabelas: T_GRUPO_ICSAP, T_DIAGNOSTICO, T_MUNICIPIO, T_ESTABELECIMENTO, T_PROCEDI
 
 ## SQL Developer
 
-sql/mini/01_ddl.sql contém o DDL completo das tabelas. sql/mini/02_dml.sql contém uma mini carga para validar chaves e relacionamentos. As consultas estão em sql/queries/consultas_exemplo.sql.
+O DDL definitivo e a mini carga DML ainda estão em revisão. Eles não foram publicados nem devem ser executados a partir deste repositório até a validação final.
 
-    @sql/mini/01_ddl.sql
-    @sql/mini/02_dml.sql
-    @sql/queries/consultas_exemplo.sql
+A área sql/ permanece reservada para a futura demonstração executável no Oracle SQL Developer.
 
 ## AED e sprints
 
