@@ -18,8 +18,7 @@ A base trabalha com perfis agregados de internação. Uma linha não representa 
     etl/                         ETL principal e orquestração
     aed/                         Análise exploratória e metodologia
     sql/                         Materiais SQL em preparação
-    sql/queries/                 Consultas de demonstração
-    docs/                        Dicionário de dados e guia do IEP
+    docs/                        Dicionário de dados
     sprints/01-ideacao/          Ideação
     sprints/02-arquitetura/      Arquitetura
     sprints/03-implementacao/    Entregas técnicas por frente

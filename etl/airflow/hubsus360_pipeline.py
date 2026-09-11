@@ -29,7 +29,7 @@ DATA_DIR = BASE_DIR / "data"
 RAW_DIR = DATA_DIR / "raw"
 REFERENCIAS_DIR = RAW_DIR / "referencias_hubsus360"
 RESULTADOS_DIR = DATA_DIR / "resultados" / "processamento_historico"
-ETL_PATH = BASE_DIR / "etl" / "ETL_HUBSUS360_ENTREGA_PATRICIA.py"
+ETL_PATH = BASE_DIR / "etl" / "HUBSUS360_ETL.py"
 
 PASTAS_ESPERADAS = {
     "dados_sih",
