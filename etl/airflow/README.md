@@ -1,5 +1,5 @@
-# Orquestração
+# Airflow — orquestração do processamento
 
-hubsus360_pipeline.py é um exemplo de pipeline da entrega de Sprint 3 para ingestão, transformação, validação e preparação da amostra analítica.
+Esta pasta contém um exemplo de DAG para orquestrar o fluxo analítico do HUBSUS360.
 
-A carga produtiva no Oracle depende das conexões e credenciais do ambiente de destino. Nenhum segredo é versionado.
+A DAG organiza as etapas de ingestão, transformação pelo ETL, validação dos resultados e preparação de uma amostra analítica. A disponibilização produtiva no Oracle depende da configuração do ambiente de destino; credenciais e segredos não são versionados.

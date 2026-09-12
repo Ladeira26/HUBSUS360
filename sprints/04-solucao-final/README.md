@@ -1,5 +1,5 @@
-# Sprint 4 — Solução final
+# Sprint 4 — solução final e indicadores
 
-A solução final consolida ETL, modelo relacional Oracle, AED, indicadores, Select AI, governança e caminhos de evolução para análise preditiva.
+Esta etapa consolida a proposta final do HUBSUS360, conectando a análise de ICSAP ao IEP e à visão de gestão da solução.
 
-A apresentação original foi resumida porque continha números de matrícula.
+O foco está na interpretação dos indicadores, na seleção de municípios e na apresentação de uma solução que ajude a identificar onde a prevenção pode gerar maior impacto.

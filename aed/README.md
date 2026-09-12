@@ -1,5 +1,7 @@
-# AED
+# AED — Análise Exploratória de Dados
 
-O dataset completo da AED não foi versionado. Esta pasta preserva a metodologia e a leitura analítica, enquanto a amostra SQL permite reproduzir relacionamentos no Oracle.
+Esta pasta apresenta a abordagem analítica do HUBSUS360: exploração dos dados hospitalares, análise de capacidade, identificação de padrões e interpretação dos indicadores de ICSAP e IEP.
 
-O grão é um perfil agregado de internação. Para obter totais, use as medidas da tabela de resumo conforme a definição de cada indicador; não conte linhas como pacientes ou AIHs.
+O material publicado preserva a metodologia e as orientações de análise. A base completa e os arquivos derivados da exploração não são versionados neste repositório público.
+
+O grão principal é um perfil agregado de internação. As linhas não devem ser interpretadas automaticamente como pacientes ou AIHs individuais.

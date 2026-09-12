@@ -1,10 +1,12 @@
-# ETL HUBSUS360
+# ETL — preparação dos dados
 
-HUBSUS360_ETL.py processa SIH/SUS de São Paulo e complementa os registros com CNES, SIGTAP, CID-10 e Regiões de Saúde.
+Esta pasta contém o processo principal de extração, transformação e preparação dos dados do HUBSUS360.
 
-Estrutura esperada: referencias_hubsus360/dados_sih, ST, LT, sigtap, cid10, dominios_cnes, regioes_saude e cnes_estabelecimentos.
+O ETL processa os arquivos do SIH/SUS de São Paulo e integra referências do CNES, SIGTAP, CID-10 e Regiões de Saúde. O resultado inclui as tabelas relacionais, a base preparada para AED e relatórios de validação.
+
+A estrutura de referências esperada está documentada no próprio processo. As fontes brutas não são incluídas no repositório.
+
+Para executar o código:
 
     python -m pip install pandas numpy openpyxl
     python etl/HUBSUS360_ETL.py --referencias referencias_hubsus360 --anos 2023 2024 2025
-
-As fontes não são incluídas. A saída contém tabelas Oracle, dataset para AED, validações e cache mensal.

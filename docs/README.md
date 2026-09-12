@@ -1,3 +1,5 @@
-# Documentação
+# Documentação do projeto
 
-O dicionário de dados descreve o modelo relacional do HUBSUS360. PDFs com conteúdo estatístico sensível permanecem fora do repositório público até revisão específica.
+Esta pasta reúne a documentação necessária para compreender o modelo de dados do HUBSUS360.
+
+O dicionário de dados descreve as tabelas relacionais, suas colunas, finalidades e relacionamentos, servindo como referência para o ETL, a AED e os experimentos no Oracle SQL Developer.

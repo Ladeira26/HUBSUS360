@@ -1,5 +1,5 @@
-# Sprint 2 — Arquitetura
+# Sprint 2 — arquitetura da solução
 
-A solução foi desenhada com ingestão de dados públicos, processamento em Python, armazenamento Oracle, Object Storage, APEX e Select AI.
+Esta etapa descreve a arquitetura planejada para o HUBSUS360, incluindo as fontes de dados, o processamento em Python, o armazenamento analítico em Oracle, o Object Storage, o APEX e o Select AI.
 
-Este resumo acompanha a arquitetura da solução sem publicar bases brutas ou estatísticas derivadas. A apresentação original permanece como material de trabalho até uma revisão específica para publicação pública.
+A arquitetura conecta ingestão, tratamento, armazenamento e consumo dos dados por gestores e equipes de análise.

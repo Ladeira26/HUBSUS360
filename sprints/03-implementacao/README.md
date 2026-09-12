@@ -1,5 +1,5 @@
-# Sprint 3 — Implementação
+# Sprint 3 — implementação e frentes técnicas
 
-ETL/Python e orquestração; SQL relacional e Oracle SQL Developer; arquitetura moderna de dados; ética, governança e segurança; Machine Learning.
+Esta etapa reúne as entregas técnicas que transformam a proposta em uma solução analisável: ETL e Python, orquestração com Airflow, modelo relacional no Oracle SQL Developer, arquitetura moderna de dados, ética, governança, segurança e Machine Learning.
 
-Os pipelines técnicos já estão publicados. O DDL relacional definitivo e as evidências com números de matrícula permanecem fora do repositório até revisão e saneamento.
+Cada frente contribui para uma parte do desenvolvimento e da documentação do HUBSUS360.

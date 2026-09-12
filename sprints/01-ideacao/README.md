@@ -1,5 +1,5 @@
-# Sprint 1 — Ideação
+# Sprint 1 — ideação da solução
 
-A proposta transforma dados públicos de internações hospitalares em informação para gestão: perfil de atendimento, ICSAP, capacidade hospitalar, sazonalidade e explicabilidade.
+Esta etapa apresenta o problema de negócio, o público da solução e a proposta do HUBSUS360 para transformar dados públicos de internações em informação útil para a gestão da saúde.
 
-O PDF original foi resumido porque continha números de matrícula; a visão do produto e os diferenciais estão preservados no README principal.
+O foco está na identificação de oportunidades relacionadas a ICSAP, capacidade hospitalar, sazonalidade e apoio à tomada de decisão.

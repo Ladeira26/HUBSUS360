@@ -1,51 +1,45 @@
 # HUBSUS360
 
-Projeto acadêmico do Challenge Oracle + FIAP (1TSCPF), voltado à inteligência de dados aplicada à saúde pública.
+Projeto acadêmico desenvolvido pelo grupo no Challenge Oracle + FIAP, com foco no uso de dados públicos para apoiar a gestão da saúde.
 
-O HUBSUS360 integra SIH/SUS, CNES, SIGTAP, CID-10, IBGE e Regiões de Saúde para analisar internações hospitalares, ICSAP, capacidade cadastrada e padrões de demanda em São Paulo, de janeiro de 2023 a dezembro de 2025.
+O HUBSUS360 integra dados do SIH/SUS, CNES, SIGTAP, CID-10, IBGE e Regiões de Saúde para analisar internações hospitalares, Internações por Condições Sensíveis à Atenção Primária (ICSAP), capacidade hospitalar e padrões de demanda no estado de São Paulo, entre 2023 e 2025.
 
 ## Objetivos
 
-- preparar um modelo relacional para Oracle Database;
-- analisar perfil, município, estabelecimento, diagnóstico, procedimento e sazonalidade;
-- calcular métricas de ICSAP, permanência, óbitos e o IEP experimental;
-- demonstrar ETL, AED, governança, segurança e Machine Learning.
+- organizar e preparar dados públicos de saúde para análise;
+- estruturar um modelo relacional para Oracle Database;
+- analisar perfis de internação, municípios, estabelecimentos, diagnósticos e procedimentos;
+- apoiar indicadores de ICSAP, permanência, óbitos e o IEP experimental;
+- documentar o processo de dados, a arquitetura e as decisões do projeto.
 
-A base trabalha com perfis agregados de internação. Uma linha não representa necessariamente uma AIH ou um paciente individual.
+A base trabalha principalmente com perfis agregados de internação. Uma linha não representa necessariamente uma AIH ou um paciente individual.
 
 ## Organização
 
-    etl/                         ETL principal e orquestração
-    aed/                         Análise exploratória e metodologia
-    sql/                         Materiais SQL em preparação
-    docs/                        Dicionário de dados
-    sprints/01-ideacao/          Ideação
-    sprints/02-arquitetura/      Arquitetura
-    sprints/03-implementacao/    Entregas técnicas por frente
-    sprints/04-solucao-final/    Solução final
+    etl/                         Processo de preparação e integração dos dados
+    aed/                         Análise exploratória e metodologia analítica
+    sql/                         Modelo relacional e experimentos no Oracle SQL Developer
+    docs/                        Dicionário de dados e documentação do modelo
+    sprints/01-ideacao/          Definição do problema e da proposta
+    sprints/02-arquitetura/      Arquitetura e tecnologias da solução
+    sprints/03-implementacao/    Desenvolvimento das frentes técnicas
+    sprints/04-solucao-final/    Consolidação da solução e dos indicadores
 
-Datasets brutos, CSVs completos, caches, temporários e ZIPs não são versionados por causa do tamanho. Evidências que continham número de matrícula foram substituídas por resumos técnicos ou não foram publicadas.
+Datasets brutos, bases completas, caches e arquivos temporários não são versionados por causa do tamanho e da proteção das informações utilizadas no desenvolvimento. Os materiais públicos não incluem números de matrícula.
 
 ## ETL e modelo
 
-etl/HUBSUS360_ETL.py lê DBC/DBF do SIH/SUS e referências do CNES, SIGTAP, CID-10 e Regiões de Saúde. Valida competências, normaliza códigos e datas, diferencia AIH inicial e continuidade, classifica os grupos de ICSAP e gera as tabelas relacionais, a saída da AED e validações.
+O processo de ETL lê arquivos DBC/DBF do SIH/SUS e referências do CNES, SIGTAP, CID-10 e Regiões de Saúde. Em seguida, valida competências, normaliza códigos e datas, classifica os grupos de ICSAP e gera as tabelas relacionais, a saída para AED e os relatórios de validação.
 
-Tabelas: T_GRUPO_ICSAP, T_DIAGNOSTICO, T_MUNICIPIO, T_ESTABELECIMENTO, T_PROCEDIMENTO, T_FAIXA_ETARIA, T_SEXO, T_RACA_COR, T_PERFIL_INTERNACAO, T_RESUMO_AIH, T_RESUMO_ASSISTENCIAL, T_CATEGORIA_LEITO e T_CAPACIDADE_LEITO.
-
-    python -m pip install pandas numpy openpyxl
-    python etl/HUBSUS360_ETL.py --referencias referencias_hubsus360 --anos 2023 2024 2025
+O modelo relacional possui 13 tabelas: T_GRUPO_ICSAP, T_DIAGNOSTICO, T_MUNICIPIO, T_ESTABELECIMENTO, T_PROCEDIMENTO, T_FAIXA_ETARIA, T_SEXO, T_RACA_COR, T_PERFIL_INTERNACAO, T_RESUMO_AIH, T_RESUMO_ASSISTENCIAL, T_CATEGORIA_LEITO e T_CAPACIDADE_LEITO.
 
 ## SQL Developer
 
-O DDL definitivo e a mini carga DML ainda estão em revisão. Eles não foram publicados nem devem ser executados a partir deste repositório até a validação final.
+A pasta sql/mini contém um DDL experimental para reproduzir a estrutura relacional no Oracle SQL Developer. A mini carga DML e as consultas analíticas continuam aguardando validação final e, por isso, não acompanham esta versão pública.
 
-A área sql/ permanece reservada para a futura demonstração executável no Oracle SQL Developer.
+## AED e evolução do projeto
 
-## AED e sprints
-
-A AED cobre exploração descritiva, capacidade hospitalar, padrões/clusters e explicabilidade. O IEP é uma proposta experimental e deve ser interpretado conforme a granularidade da base.
-
-Sprint 1: ideação. Sprint 2: arquitetura, Oracle, Object Storage, APEX e Select AI. Sprint 3: ETL/Python, SQL relacional, arquitetura moderna, ética/governança/segurança e Machine Learning. Sprint 4: solução final.
+A AED reúne a metodologia de exploração dos dados, os indicadores propostos e os cuidados de interpretação. As pastas de sprints mostram como a solução evoluiu desde a ideação até as frentes de implementação e a proposta final.
 
 ## Integrantes
 
