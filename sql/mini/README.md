@@ -1,11 +1,9 @@
-# SQL Developer
+# SQL Developer — modelo relacional experimental
 
-O DDL definitivo e a mini carga DML do HUBSUS360 ainda estão em revisão.
+Esta pasta reúne os scripts destinados à reprodução do modelo relacional do HUBSUS360 no Oracle SQL Developer.
 
-Por enquanto, esta pasta não contém scripts executáveis. Quando a estrutura for validada, serão adicionados:
+O arquivo `01_ddl_experimental.sql` cria as 13 tabelas do modelo, seus índices, chaves e regras de integridade. Ele deve ser executado em um schema Oracle compatível e vazio.
 
-- DDL compatível com a mini carga;
-- DML da amostra;
-- consultas testadas no Oracle SQL Developer.
+A mini carga DML e as consultas analíticas ainda aguardam validação final e permanecem fora do repositório. O DDL é experimental e não representa, sozinho, a carga completa do ETL.
 
-Não execute arquivos SQL desta pasta até a publicação da versão validada.
+Não há dados pessoais ou números de matrícula neste material.
