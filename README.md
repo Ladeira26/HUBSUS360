@@ -17,15 +17,15 @@ A base trabalha principalmente com perfis agregados de internação. Uma linha n
 ## Organização
 
     etl/                         Processo de preparação e integração dos dados
-    aed/                         Análise exploratória e metodologia analítica
+    aed/                         Análise exploratória, código e metodologia analítica
     sql/                         Modelo relacional e experimentos no Oracle SQL Developer
     docs/                        Dicionário de dados e documentação do modelo
-    sprints/01-ideacao/          Definição do problema e da proposta
-    sprints/02-arquitetura/      Arquitetura e tecnologias da solução
-    sprints/03-implementacao/    Desenvolvimento das frentes técnicas
-    sprints/04-solucao-final/    Consolidação da solução e dos indicadores
 
 Datasets brutos, bases completas, caches e arquivos temporários não são versionados por causa do tamanho e da proteção das informações utilizadas no desenvolvimento. Os materiais públicos não incluem números de matrícula.
+
+## Pitch
+
+A gestão da saúde pública precisa identificar onde as internações poderiam ser evitadas e como a capacidade hospitalar está sendo utilizada. O HUBSUS360 integra dados públicos de saúde, organiza essas informações em um modelo relacional e combina ETL, análise exploratória, ICSAP e um IEP experimental para apoiar a priorização de municípios e a tomada de decisão.
 
 ## ETL e modelo
 
@@ -35,11 +35,11 @@ O modelo relacional possui 13 tabelas: T_GRUPO_ICSAP, T_DIAGNOSTICO, T_MUNICIPIO
 
 ## SQL Developer
 
-A pasta sql/mini contém um DDL experimental para reproduzir a estrutura relacional no Oracle SQL Developer. A mini carga DML e as consultas analíticas continuam aguardando validação final e, por isso, não acompanham esta versão pública.
+A pasta sql/mini contém o DDL experimental e uma carga DML de amostra para reproduzir a estrutura relacional e conferir chaves e relacionamentos no Oracle SQL Developer. A carga não representa a base completa do SIH/SUS.
 
-## AED e evolução do projeto
+## AED
 
-A AED reúne a metodologia de exploração dos dados, os indicadores propostos e os cuidados de interpretação. As pastas de sprints mostram como a solução evoluiu desde a ideação até as frentes de implementação e a proposta final.
+A pasta aed reúne o notebook com o código da análise exploratória e a documentação metodológica. O notebook utiliza o dataset tratado gerado pelo ETL; a base completa não é versionada.
 
 ## Integrantes
 
