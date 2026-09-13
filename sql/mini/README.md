@@ -1,9 +1,19 @@
 # SQL Developer — modelo relacional experimental
 
-Esta pasta reúne os scripts destinados à reprodução do modelo relacional do HUBSUS360 no Oracle SQL Developer.
+Esta pasta reúne os scripts para reproduzir uma amostra do modelo relacional do HUBSUS360 no Oracle SQL Developer.
 
-O arquivo `01_ddl_experimental.sql` cria as 13 tabelas do modelo, seus índices, chaves e regras de integridade. Ele deve ser executado em um schema Oracle compatível e vazio.
+Arquivos disponíveis:
 
-A mini carga DML e as consultas analíticas ainda aguardam validação final e permanecem fora do repositório. O DDL é experimental e não representa, sozinho, a carga completa do ETL.
+- `01_ddl_experimental.sql`: cria as 13 tabelas, índices, chaves e regras de integridade.
+- `02_dml_amostra.sql`: insere uma carga de demonstração relacionada às 13 tabelas.
+
+Como reproduzir:
+
+1. Abra um schema Oracle vazio no SQL Developer.
+2. Execute `01_ddl_experimental.sql`.
+3. Execute `02_dml_amostra.sql` usando Executar como Script (F5).
+4. Consulte as tabelas para conferir chaves e relacionamentos.
+
+A carga é uma amostra para validação técnica e não representa a base completa do SIH/SUS. O DDL e o DML não substituem a execução do ETL completo.
 
 Não há dados pessoais ou números de matrícula neste material.
