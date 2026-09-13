@@ -193,8 +193,8 @@ def executar_transformacao():
     logger = logging.getLogger(__name__)
 
     script_etl = Path(
-        "/opt/airflow/hubsus360/scripts/"
-        "ETL_HUBSUS360_ENTREGA_PATRICIA.py"
+        "/opt/airflow/hubsus360/etl/"
+        "HUBSUS360_ETL.py"
     )
 
     referencias_dir = Path(
