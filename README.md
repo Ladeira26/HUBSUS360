@@ -1,50 +1,79 @@
 # HUBSUS360
 
-Projeto acadêmico desenvolvido pelo grupo no Challenge Oracle + FIAP, com foco no uso de dados públicos para apoiar a gestão da saúde.
+## Do dado ao diagnóstico da saúde pública
 
-O HUBSUS360 integra dados do SIH/SUS, CNES, SIGTAP, CID-10, IBGE e Regiões de Saúde para analisar internações hospitalares, Internações por Condições Sensíveis à Atenção Primária (ICSAP), capacidade hospitalar e padrões de demanda no estado de São Paulo, entre 2023 e 2025.
+O HUBSUS360 transforma dados públicos e fragmentados do SUS em informações estratégicas para revelar onde a rede hospitalar está sob pressão, quais internações estão relacionadas a condições sensíveis à atenção primária e onde os gestores podem priorizar ações preventivas.
 
-## Objetivos
+Desenvolvido pelo grupo GP3L no Challenge Oracle + FIAP, o projeto integra dados do SIH/SUS, CNES, SIGTAP, CID-10, IBGE e Regiões de Saúde para analisar as internações hospitalares do estado de São Paulo entre 2023 e 2025.
 
-- organizar e preparar dados públicos de saúde para análise;
-- estruturar um modelo relacional para Oracle Database;
-- analisar perfis de internação, municípios, estabelecimentos, diagnósticos e procedimentos;
-- apoiar indicadores de ICSAP, permanência, óbitos e o IEP experimental;
-- documentar o processo de dados, a arquitetura e as decisões do projeto.
+## O problema
 
-A base trabalha principalmente com perfis agregados de internação. Uma linha não representa necessariamente uma AIH ou um paciente individual.
+Secretarias e gestores de saúde precisam tomar decisões importantes a partir de dados espalhados em diferentes fontes. Quando essas informações precisam ser organizadas e cruzadas manualmente, a resposta demora e a oportunidade de agir pode passar.
 
-## Organização
+## A solução
 
-    etl/                         Processo de preparação e integração dos dados
-    aed/                         Análise exploratória, código e metodologia analítica
-    sql/                         Modelo relacional e experimentos no Oracle SQL Developer
-    docs/                        Dicionário de dados e documentação do modelo
+O HUBSUS360 organiza o histórico hospitalar por meio de um processo de ETL em Python, estrutura os dados em um modelo relacional Oracle e apresenta indicadores em uma visão analítica. A solução combina volume de internações, perfil assistencial, permanência, óbitos, estabelecimentos, diagnósticos e capacidade hospitalar.
 
-Datasets brutos, bases completas, caches e arquivos temporários não são versionados por causa do tamanho e da proteção das informações utilizadas no desenvolvimento. Os materiais públicos não incluem números de matrícula.
+Além de mostrar números, o projeto busca explicar a pressão assistencial:
+
+- ICSAP: identifica internações relacionadas a condições sensíveis à atenção primária, ajudando a investigar possíveis causas de sobrecarga hospitalar;
+- IEP experimental: acrescenta uma dimensão financeira ao evidenciar a participação dos atendimentos classificados como ICSAP no valor analisado; não é um indicador oficial do SUS;
+- análise exploratória: revela padrões, diferenças entre municípios e comportamentos que merecem investigação;
+- painel e consultas analíticas: aproximam os resultados da linguagem de gestão e apoiam a priorização de ações.
 
 ## Pitch
 
-A gestão da saúde pública precisa identificar onde as internações poderiam ser evitadas e como a capacidade hospitalar está sendo utilizada. O HUBSUS360 integra dados públicos de saúde, organiza essas informações em um modelo relacional e combina ETL, análise exploratória, ICSAP e um IEP experimental para apoiar a priorização de municípios e a tomada de decisão.
+[🎥 Assistir ao pitch do HUBSUS360 no YouTube](https://youtu.be/lE07c2YoyUk)
 
-## ETL e modelo
+## O que entregamos
 
-O processo de ETL lê arquivos DBC/DBF do SIH/SUS e referências do CNES, SIGTAP, CID-10 e Regiões de Saúde. Em seguida, valida competências, normaliza códigos e datas, classifica os grupos de ICSAP e gera as tabelas relacionais, a saída para AED e os relatórios de validação.
+| Frente | O que foi desenvolvido |
+|---|---|
+| Engenharia de dados | Extração, transformação, padronização e preparação dos dados do SIH/SUS e fontes auxiliares |
+| Qualidade | Validações de estrutura, registros, competências, códigos e resultados gerados pelo ETL |
+| Modelo relacional | 13 tabelas Oracle com chaves, relacionamentos, índices e regras de integridade |
+| Análise de dados | AED com estatísticas descritivas, distribuições, valores faltantes, outliers e correlações |
+| Indicadores | ICSAP, permanência, mortalidade, capacidade hospitalar e IEP experimental |
+| Visualização | Proposta de painel para comparar municípios, períodos e perfis de atendimento |
 
-O modelo relacional possui 13 tabelas: T_GRUPO_ICSAP, T_DIAGNOSTICO, T_MUNICIPIO, T_ESTABELECIMENTO, T_PROCEDIMENTO, T_FAIXA_ETARIA, T_SEXO, T_RACA_COR, T_PERFIL_INTERNACAO, T_RESUMO_AIH, T_RESUMO_ASSISTENCIAL, T_CATEGORIA_LEITO e T_CAPACIDADE_LEITO.
+## Como o projeto funciona
 
-## SQL Developer
+1. Os dados públicos são coletados e organizados.
+2. O ETL em Python realiza a limpeza, padronização e classificação dos registros.
+3. Os resultados são estruturados no Oracle Database.
+4. A AED e os indicadores transformam os dados em evidências.
+5. O painel apoia gestores na investigação e priorização de ações.
 
-A pasta sql/mini contém o DDL experimental e uma carga DML de amostra para reproduzir a estrutura relacional e conferir chaves e relacionamentos no Oracle SQL Developer. A carga não representa a base completa do SIH/SUS.
+## Escopo e transparência
 
-## AED
+- O recorte principal utiliza dados de São Paulo entre 2023 e 2025.
+- A base trabalha principalmente com perfis agregados de internação; uma linha não representa necessariamente uma AIH ou um paciente individual.
+- A base completa e os arquivos brutos não são versionados por tamanho e proteção dos dados utilizados no desenvolvimento.
+- O IEP é uma métrica experimental do projeto e não representa, sozinho, a eficiência completa da Atenção Primária.
 
-A pasta aed reúne o notebook com o código da análise exploratória e a documentação metodológica. O notebook utiliza o dataset tratado gerado pelo ETL; a base completa não é versionada.
+## Tecnologias
 
-## Integrantes
+Python · Pandas · SQL · Oracle Autonomous Database · Apache Airflow · Jupyter Notebook · Oracle APEX · GitHub
+
+## Organização do repositório
+
+    etl/                         Processo de preparação e integração dos dados
+    etl/airflow/                 DAG para orquestração do fluxo analítico
+    aed/                         Análise exploratória e metodologia analítica
+    sql/ddl/                     Scripts de criação do modelo relacional
+    sql/dml/                     Scripts de carga dos dados de referência e amostra
+    docs/                        Dicionário de dados e documentação do modelo
+
+Cada pasta possui um README próprio com a explicação dos arquivos e da finalidade daquele componente.
+
+## Equipe
 
 - Guilherme Ladeira Corrêa Santos
 - Lucas Amaral da Silva Barros
 - Lucas Araújo Curci
 - Lucas Luna Pimentel
 - Pedro Henrique Moretti Aguiar
+
+## Contexto acadêmico
+
+Challenge Oracle + FIAP 2026 · Turma 1TSCPF · Grupo GP3L
